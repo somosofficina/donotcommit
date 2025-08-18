@@ -13,7 +13,9 @@ from src.templates_conf import templates
 app = FastAPI(title='donotcommit.com')
 app.mount('/static', StaticFiles(directory='src/static'), name='static')
 
-logfire.configure(token=settings.LOGFIRE_TOKEN)
+logfire.configure(
+    token=settings.LOGFIRE_TOKEN, send_to_logfire='if-token-present'
+)
 logfire.instrument_fastapi(app, capture_headers=True)
 logfire.instrument_system_metrics()
 
