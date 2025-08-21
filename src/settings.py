@@ -6,7 +6,7 @@ class Settings(BaseSettings):
         env_file='.env', env_file_encoding='utf-8', extra='ignore'
     )
 
-    LOGFIRE_TOKEN: str
+    LOGFIRE_TOKEN: str | None = None
 
 
 settings = Settings()
