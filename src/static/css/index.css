@@ -51,6 +51,7 @@ header {
 
 header h1 {
   font-size: var(--font-size-large);
+  letter-spacing: unset;
   margin: 0;
 }
 
