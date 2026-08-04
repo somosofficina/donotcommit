@@ -9,8 +9,8 @@
   --spacing-sm: 1rem;
   --spacing-md: 2rem;
   
-  --font-primary: "Helvetica Neue", ui-sans-serif;
-  --font-secondary: "Instrument Serif", ui-serif;
+  --font-primary: "Helvetica Neue", sans-serif;
+  --font-secondary: "Instrument Serif", serif;
   --font-size-base: 1rem;
   --font-size-large: 2rem;
   --font-size-xlarge: clamp(5rem, 10vw, 8rem);
