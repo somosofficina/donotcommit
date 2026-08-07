@@ -4,8 +4,9 @@ from typing import Final
 
 import logfire
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, PlainTextResponse
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.settings import settings
 from src.templates_conf import templates
@@ -29,6 +30,27 @@ TEMPLATES: Final = tuple(GITIGNORE_FOLDER.rglob('*.gitignore'))
 @app.get('/', response_class=HTMLResponse, include_in_schema=False)
 def read_root(request: Request):
     return templates.TemplateResponse(request=request, name='index.html')
+
+
+@app.exception_handler(StarletteHTTPException)
+def custom_http_exception_handler(
+    request: Request, exc: StarletteHTTPException
+):
+    if exc.status_code == HTTPStatus.NOT_FOUND:
+        if request.url.path.startswith('/api'):
+            return JSONResponse(
+                status_code=HTTPStatus.NOT_FOUND,
+                content={'detail': 'Not Found'},
+            )
+
+        return templates.TemplateResponse(
+            request=request,
+            name='404.html',
+            context={'path': request.url.path},
+            status_code=404,
+        )
+
+    raise exc
 
 
 @app.get('/api/list', response_class=PlainTextResponse)
